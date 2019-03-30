@@ -15,13 +15,6 @@ def get_items_from_csv():
         data = csv.read()
         return (list(map(lambda k: int(k[:-1]), data.splitlines())))
 
-def record_update_ts(ts):
-    with open('ts.txt', 'a+') as f:
-        f.seek(0)
-        stamps = list(map(lambda k: int(k), f.read().splitlines()))
-        if stamps == [] or ts > (stamps[-1:][0] + 30):
-            f.write('%d\n' % (ts))
-
 def append_item_data(item):
     r = requests.get('http://services.runescape.com/m=itemdb_oldschool/api/graph/' + str(item) + '.json')
     data = json.loads(r.text, object_pairs_hook=OrderedDict)
@@ -35,7 +28,6 @@ def append_item_data(item):
 
         for d in data['daily']:
             if int(d) > last_entry_ts:
-                record_update_ts(int(time.time()))  # How wrong is the ts associated with the data?
                 print('{}: Writing {}'.format(time.time(), d))
                 f.write('{}, {}\n'.format(d, data['daily'][d]))
 
