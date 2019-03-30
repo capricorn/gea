@@ -10,7 +10,10 @@ def get_last_csv_entry(csv_data):
 
     return csv_data[-1].split(', ')
 
-items = [ 371, 373 ]
+def get_items_from_csv():
+    with open('items.csv', 'r') as csv:
+        data = csv.read()
+        return (list(map(lambda k: int(k[:-1]), data.splitlines())))
 
 def record_update_ts(ts):
     with open('ts.txt', 'a+') as f:
@@ -36,13 +39,12 @@ def append_item_data(item):
                 print('{}: Writing {}'.format(time.time(), d))
                 f.write('{}, {}\n'.format(d, data['daily'][d]))
 
+items = get_items_from_csv()
 try:
     while True:
         for item in items:
             print('Attempting item update: {}'.format(item)) 
             append_item_data(item)
-
-        print('Checking again in a bit..')
-        time.sleep(60 * 15)
+            time.sleep(2)
 except KeyboardInterrupt:
     pass
