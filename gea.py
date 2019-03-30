@@ -18,7 +18,7 @@ def get_items_from_csv():
 def append_item_data(item):
     r = requests.get('http://services.runescape.com/m=itemdb_oldschool/api/graph/' + str(item) + '.json')
     data = json.loads(r.text, object_pairs_hook=OrderedDict)
-    with open(str(item) + '.csv', 'a+') as f:
+    with open('./csv/' + str(item) + '.csv', 'a+') as f:
         f.seek(0)
         csv_data = f.read()
 
