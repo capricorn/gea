@@ -39,13 +39,17 @@ def append_item_data(item):
 items = get_items_from_csv()
 groups = [ items[i:(i+5) % len(items)] for i in range(0, len(items), 5) ] 
 
-for items in groups:
-    threads = []
-    for item in items:
-        thread = threading.Thread(target=append_item_data, args=(item,))
-        threads.append(thread)
+def main():
+    for items in groups:
+        threads = []
+        for item in items:
+            thread = threading.Thread(target=append_item_data, args=(item,))
+            threads.append(thread)
 
-    [ thread.start() for thread in threads ]
-    [ thread.join() for thread in threads ]
-    print('Recorded group ' + str(items))
-    time.sleep(1)
+        [ thread.start() for thread in threads ]
+        [ thread.join() for thread in threads ]
+        print('Recorded group ' + str(items))
+        time.sleep(1)
+
+if __name__ == '__main__':
+    main()
